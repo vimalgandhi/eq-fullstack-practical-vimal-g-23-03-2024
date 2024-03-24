@@ -1,13 +1,8 @@
 const validator = require('validator');
 const { userModel } = require("../../../models/users.model")
+const commonHelper = require("../../../helpers/common.helper")
 
-const signUpValidator = {
-
-    validateNameString(name) {
-        // Validate name: no special characters allowed
-        const nameRegex = /^[a-zA-Z\s]*$/; // Only alphabets and spaces allowed
-        return nameRegex.test(name);
-    },
+const userValidator = {
 
     async userExists(email) {
         const user = await userModel.findOne({ email });
@@ -23,14 +18,14 @@ const signUpValidator = {
         if (!password) return res.status(400).json({ error: "Password is required" });
 
         // Now calling validateNameString without 'this'
-        if (!signUpValidator.validateNameString(firstName)) {
+        if (!commonHelper.validateNameString(firstName)) {
             return res.status(400).json({ error: `${firstName} should only contain alphabets and spaces` });
         }
-        if (!signUpValidator.validateNameString(lastName)) {
+        if (!commonHelper.validateNameString(lastName)) {
             return res.status(400).json({ error: `${lastName} should only contain alphabets and spaces` });
         }
 
-        const user = await signUpValidator.userExists(email)
+        const user = await userValidator.userExists(email)
         if (user) {
             return res.status(400).json({ error: "User already exists" });
         }
@@ -48,7 +43,7 @@ const signUpValidator = {
 
         if (!validator.isEmail(email)) return res.status(400).json({ error: "Invalid email" });
 
-        const user = await signUpValidator.userExists(email);
+        const user = await userValidator.userExists(email);
         if (!user) return res.status(400).json({ error: "User not found." });
 
         req.me = user;
@@ -56,4 +51,4 @@ const signUpValidator = {
     }
 };
 
-module.exports = signUpValidator;
+module.exports = userValidator;
