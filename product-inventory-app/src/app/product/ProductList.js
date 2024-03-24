@@ -52,7 +52,7 @@ function preventDefault(event) {
     event.preventDefault();
 }
 
-export default function Orders() {
+export default function Products() {
     return (
         <React.Fragment>
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
