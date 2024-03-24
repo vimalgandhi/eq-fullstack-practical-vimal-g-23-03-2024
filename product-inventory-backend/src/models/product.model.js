@@ -20,12 +20,7 @@ const productSchema = new mongoose.Schema(
             type: Number,
             required: true
         },
-        quantity: {
-            type: Number,
-            default: 0,
-            required: true
-        },
-        image: {
+        imageUrl: {
             type: String,
             required: true
         },

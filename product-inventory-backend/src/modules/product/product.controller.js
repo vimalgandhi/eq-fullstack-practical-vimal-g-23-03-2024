@@ -6,7 +6,7 @@ const productController = {
 
     createProduct: async (req, res) => {
         try {
-            const { name, description, categoryId, price, quantity, image } = req.body;
+            const { name, description, categoryId, price,  imageUrl } = req.body;
             const { id } = req.me;
 
             const product = new productModel({
@@ -14,8 +14,7 @@ const productController = {
                 description,
                 categoryId,
                 price,
-                quantity,
-                image,
+                imageUrl,
                 createdBy: ObjectId(id),
             });
 
@@ -63,12 +62,6 @@ const productController = {
         return res.status(200).json(categories);
     },
 
-    getProductById: async (req, res) => {
-        const { productId } = req.params;
-
-        const product = await productModel.findOne({ _id: ObjectId(productId) });
-        return res.status(200).json(product);
-    },
 
     deleleProductById: async (req, res) => {
         const { productId } = req.params;

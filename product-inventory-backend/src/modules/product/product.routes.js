@@ -7,7 +7,6 @@ const middleware = require("../../middleware")
 router.post("/", middleware.auth, middleware.acl('admin'), validator.createProduct, productController.createProduct);
 router.put("/", middleware.auth, middleware.acl('admin'), validator.updateproduct, productController.updateProduct);
 router.get("/", middleware.auth, productController.getProductList);
-// router.get("/product/:productId", middleware.auth, productController.getProductById);
-// router.delete("/product/:id", middleware.auth, middleware.acl('admin'), productController.deleleProductById);
+router.delete("/product/:productId", middleware.auth, middleware.acl('admin'), productController.deleleProductById);
 
 module.exports = router;
