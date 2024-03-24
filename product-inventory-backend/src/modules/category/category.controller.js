@@ -25,7 +25,6 @@ const categoryController = {
     updateCategory: async (req, res) => {
         const { id, name, description } = req.body;
         const { me } = req
-        const { page, limit, ...others } = req.query;
 
         try {
             await categoryModel.updateOne({ _id: ObjectId(id), createdBy: ObjectId(me.id) }, { name, description });

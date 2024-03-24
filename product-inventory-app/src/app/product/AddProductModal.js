@@ -6,8 +6,7 @@ import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-
-export default function AddCategoryModal({ onSubmit, initialValues, isOpen, onClose }) {
+export default function AddProductModal({ onSubmit, initialValues, isOpen, onClose, categories }) {
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: initialValues // Set initial values for form fields
     });
@@ -20,8 +19,8 @@ export default function AddCategoryModal({ onSubmit, initialValues, isOpen, onCl
         <Modal
             open={isOpen}
             onClose={onClose}
-            aria-labelledby="add-category-modal-title"
-            aria-describedby="add-category-modal-description"
+            aria-labelledby="add-product-modal-title"
+            aria-describedby="add-product-modal-description"
         >
             <Box
                 sx={{
@@ -35,8 +34,8 @@ export default function AddCategoryModal({ onSubmit, initialValues, isOpen, onCl
                     minWidth: 300,
                 }}
             >
-                <Typography id="add-category-modal-title" variant="h6" component="h2" gutterBottom>
-                    {initialValues ? "Edit Category" : "Add Category"}
+                <Typography id="add-product-modal-title" variant="h6" component="h2" gutterBottom>
+                    {initialValues ? "Edit Product" : "Add Product"}
                 </Typography>
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <TextField
@@ -55,6 +54,38 @@ export default function AddCategoryModal({ onSubmit, initialValues, isOpen, onCl
                         error={!!errors.description}
                         helperText={errors.description && "Description is required"}
                     />
+                    <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Price"
+                        type="number"
+                        {...register('price', { required: true })}
+                        error={!!errors.price}
+                        helperText={errors.price && "Price is required"}
+                    />
+                    <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Image URL"
+                        {...register('imageUrl')}
+                        error={!!errors.imageUrl}
+                        helperText={errors.imageUrl && "Image URL is required"}
+                    />
+                    {/* <TextField
+                        fullWidth
+                        select
+                        margin="normal"
+                        label="Category"
+                        {...register('category', { required: true })}
+                        error={!!errors.category}
+                        helperText={errors.category && "Category is required"}
+                    >
+                        {categories.map((category) => (
+                            <MenuItem key={category.id} value={category.id}>
+                                {category.name}
+                            </MenuItem>
+                        ))}
+                    </TextField> */}
                     <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                         Submit
                     </Button>

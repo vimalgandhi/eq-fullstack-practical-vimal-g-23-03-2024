@@ -1,87 +1,133 @@
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import * as React from 'react';
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-    return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-    createData(
-        0,
-        '16 Mar, 2019',
-        'Elvis Presley',
-        'Tupelo, MS',
-        'VISA ⠀•••• 3719',
-        312.44,
-    ),
-    createData(
-        1,
-        '16 Mar, 2019',
-        'Paul McCartney',
-        'London, UK',
-        'VISA ⠀•••• 2574',
-        866.99,
-    ),
-    createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-    createData(
-        3,
-        '16 Mar, 2019',
-        'Michael Jackson',
-        'Gary, IN',
-        'AMEX ⠀•••• 2000',
-        654.39,
-    ),
-    createData(
-        4,
-        '15 Mar, 2019',
-        'Bruce Springsteen',
-        'Long Branch, NJ',
-        'VISA ⠀•••• 5919',
-        212.79,
-    ),
-];
-
-function preventDefault(event) {
-    event.preventDefault();
-}
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from "react";
+import swal from "sweetalert";
+import {
+    createData,
+    deleteData,
+    fetchData,
+    updateData,
+} from "../../helpers/ApiHelper";
+import AddProductModal from "./AddProductModal";
+import ProductCard from "./ProductCard";
 
 export default function Products() {
+    const [products, setProducts] = useState([]);
+    const [cateogories, setCategories] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+    useEffect(() => {
+        getProduts();
+    }, []);
+
+    const getProduts = async () => {
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+        };
+        await fetchData("products", config).then((data) => {
+            if (data.length > 0) {
+                setProducts(data);
+            }
+        });
+        await fetchData("categories", config).then((data) => {
+            if (data.length > 0) {
+                setCategories(data);
+            }
+        });
+    };
+
+    const handleAddProduct = (data) => {
+        setIsModalOpen(false);
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+        };
+        if (data._id) {
+            const product = {
+                id: data._id,
+                name: data.name,
+                description: data.description,
+                categoryId: data.categoryId,
+                price: data.price,
+                imageUrl: data.imageUrl,
+            };
+            updateData("products", product, config).then((data) => {
+                if (data) {
+                    getProduts();
+                }
+            });
+        } else {
+            createData("products", data, config).then((data) => {
+                if (data) {
+                    getProduts();
+                }
+            });
+        }
+    };
+
+    const handleEditProduct = (product) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
+    };
+
+    const handleDeleteProduct = (product) => {
+        swal({
+            title: "Delete Product",
+            text: "Are you sure you want to delete?",
+            button: "Ok!",
+        }).then(async (data) => {
+            if (data) {
+                deleteProduct(product);
+            }
+        });
+    };
+
+    const deleteProduct = async (product) => {
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+        };
+        await deleteData(`products/product/${product._id}`, config).then((data) => {
+            getProduts();
+        });
+    };
+
     return (
         <React.Fragment>
-            <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                Products List    </Typography>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Ship To</TableCell>
-                        <TableCell>Payment Method</TableCell>
-                        <TableCell align="right">Sale Amount</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.id}>
-                            <TableCell>{row.date}</TableCell>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.shipTo}</TableCell>
-                            <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell align="right">{`$${row.amount}`}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-                See more orders
-            </Link>
+            <Typography
+                component="h2"
+                variant="h6"
+                color="primary"
+                gutterBottom
+                sx={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
+            >
+                Products List
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    sx={{ marginLeft: "auto" }}
+                    onClick={() => setIsModalOpen(true)}
+                >
+                    Add Product
+                </Button>
+            </Typography>
+            {isModalOpen ? (
+                <AddProductModal
+                    onSubmit={handleAddProduct}
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    initialValues={selectedProduct}
+                    categories={cateogories}
+                />
+            ) : null}
+            <ProductCard
+                products={products}
+                handleEditProduct={handleEditProduct}
+                handleDeleteProduct={handleDeleteProduct}
+            />
         </React.Fragment>
     );
 }
