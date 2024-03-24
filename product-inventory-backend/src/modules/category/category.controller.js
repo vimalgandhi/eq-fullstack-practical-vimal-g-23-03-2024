@@ -47,13 +47,6 @@ const categoryController = {
         return res.status(200).json(categories);
     },
 
-    getCategoryById: async (req, res) => {
-        const { categoryId } = req.params;
-
-        const category = await categoryModel.findOne({ _id: ObjectId(categoryId) });
-        return res.status(200).json(category);
-    },
-
     deleleCategoryById: async (req, res) => {
         const { categoryId } = req.params;
 
