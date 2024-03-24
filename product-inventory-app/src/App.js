@@ -1,20 +1,35 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import SignIn from './app/auth/Sigin';
 import SignUp from './app/auth/SignUp';
 import Dashboard from './app/dashboard/Dashboard';
 import { AuthProvider } from './provider/AuthProvider';
 
-const App = () => {
+
+function App() {
+  const tokenLatest = localStorage.getItem("Token");
+
+
+  const PrivateRoute = ({ children }) => {
+    return tokenLatest ? children : <Navigate to="/login" />;
+  };
+
 
   return (
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<SignIn />} exact />
+          <Route path="/" element={<SignIn />} />
+          <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} exact />
-          <Route path="/dashboard" element={<Dashboard />} exact />
-          {/* <ProtectedRoute path="/dashboard" element={Dashboard} exact /> */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                < Dashboard />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>
