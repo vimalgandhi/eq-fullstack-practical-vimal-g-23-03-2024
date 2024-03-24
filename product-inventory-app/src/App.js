@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+import SignIn from './app/auth/Sigin';
+import SignUp from './app/auth/SignUp';
+import { AuthProvider } from './provider/AuthProvider';
 
-function App() {
+const App = () => {
+  // const [user, setUser] = React.useState(null);
+
+  // const handleLogin = () => setUser({ id: '1', name: 'robin' });
+  // const handleLogout = () => setUser(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<SignIn />} exact />
+          <Route path="/signup" element={<SignUp />} exact />
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
-}
+};
+
 
 export default App;
+
