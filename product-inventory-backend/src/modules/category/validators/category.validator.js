@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const { categoryModel } = require("../../../models/category.model");
 const ObjectId = mongoose.Types.ObjectId;
 
-const createCategory = {
+const categoryValidator = {
 
     async userExists(email) {
         const user = await userModel.findOne({ email });
@@ -45,4 +45,4 @@ const createCategory = {
     },
 };
 
-module.exports = createCategory;
+module.exports = categoryValidator;

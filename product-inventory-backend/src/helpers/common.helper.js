@@ -1,8 +1,8 @@
 const commonHelper = {
 
     validateNameString(name) {
-        // Validate name: no special characters allowed
-        const nameRegex = /^[a-zA-Z\s]*$/; // Only alphabets and spaces allowed
+        // Validate name: allow alphabets, spaces, and digits
+        const nameRegex = /^[a-zA-Z0-9\s]*$/; // Alphabets, digits, and spaces allowed
         return nameRegex.test(name);
     },
 
