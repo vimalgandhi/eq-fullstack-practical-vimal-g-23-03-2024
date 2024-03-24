@@ -9,17 +9,22 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { createData } from '../../helpers/ApiHelper';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         console.log(data);
-        const response = await createData("signup", data);
-        // localStorage.setItem("token", response.data.token);
+        const response = await createData("users/sign-up", data);
+        if (response) {
+            navigate("/login");
+
+        }
         console.log(response);
     };
 

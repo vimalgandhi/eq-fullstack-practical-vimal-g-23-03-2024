@@ -20,20 +20,24 @@ export const fetchData = async (endpoint) => {
 
 // Function to Create data
 export const createData = async (endpoint, newData) => {
-    console.log(BASE_URL);
     try {
         const response = await axios.post(`${BASE_URL}/${endpoint}`, newData);
         return response.data;
     } catch (error) {
+        // Extract error message from the error object
+        const errorMessage = error.response ? error.response.data.error : error.message;
+
+        // Display SweetAlert with the error message
         swal({
             title: "Error!",
-            text: (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.response,
+            text: errorMessage,
             icon: "error",
             button: "Ok!",
         });
-
+        // Throw error to propagate it further if needed
     }
 };
+
 
 // Function to Update data
 export const updateData = async (endpoint, updatedData) => {
@@ -43,7 +47,7 @@ export const updateData = async (endpoint, updatedData) => {
     } catch (error) {
         swal({
             title: "Error!",
-            text: (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.response,
+            text: error,
             icon: "error",
             button: "Ok!",
         });
@@ -59,7 +63,7 @@ export const deleteData = async (endpoint) => {
     } catch (error) {
         swal({
             title: "Error!",
-            text: (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.response,
+            text: error,
             icon: "error",
             button: "Ok!",
         });
