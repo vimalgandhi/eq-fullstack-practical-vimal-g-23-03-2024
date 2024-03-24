@@ -1,5 +1,4 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -19,8 +18,8 @@ import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import Orders from '../product/ProductList';
 
 
 const drawerWidth = 240;
@@ -73,29 +72,32 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
     const [open, setOpen] = React.useState(true);
+    const [product, setProduct] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
-    const navigate = useNavigate();
+
     const mainListItems = (
         <React.Fragment>
-            <ListItemButton>
-                <ListItemIcon>
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-            </ListItemButton>
-            <ListItemButton>
+            <ListItemButton onClick={() => {
+                if (!product) {
+                    setProduct(true)
+                }
+            }} >
                 <ListItemIcon>
                     <ShoppingCartIcon />
                 </ListItemIcon>
                 <ListItemText primary="Products" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton onClick={() => {
+                if (product) {
+                    setProduct(false)
+                }
+            }} >
                 <ListItemIcon>
                     <PeopleIcon />
                 </ListItemIcon>
-                <ListItemText primary="Categories" onClick={() => { }} />
+                <ListItemText primary="Categories" />
             </ListItemButton>
         </React.Fragment>
     );
@@ -106,9 +108,7 @@ export default function Dashboard() {
                 <CssBaseline />
                 <AppBar position="absolute" open={open}>
                     <Toolbar
-                        sx={{
-                            pr: '24px', // keep right padding when drawer closed
-                        }}
+                        sx={{ pr: '24px', }}
                     >
                         <IconButton
                             edge="start"
@@ -164,32 +164,37 @@ export default function Dashboard() {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    {product ? <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={6} lg={6}>
+                            <Grid item xs={12} md={12} lg={12}>
                                 <Paper
                                     sx={{
                                         p: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        height: 240,
+                                        height: '100%',
                                     }}
                                 >
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={6} lg={6}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
+                                    <Orders />
                                 </Paper>
                             </Grid>
                         </Grid>
-                    </Container>
+                    </Container> :
+                        <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} md={12} lg={12}>
+                                    <Paper
+                                        sx={{
+                                            p: 2,
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            height: 240,
+                                        }}
+                                    >
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </Container>}
                 </Box>
             </Box>
         </ThemeProvider>
