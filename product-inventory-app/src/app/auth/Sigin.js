@@ -22,7 +22,8 @@ export default function SignIn() {
         console.log(data);
         const response = await createData("users/sign-in", data);
         if (response) {
-            localStorage.setItem("token", response.token);
+            const token = response.token;
+            localStorage.setItem("token", token);
             navigate("/dashboard");
         }
     };
