@@ -5,6 +5,8 @@ I am using node  V18
 
 run both project 
 `npm start`
+
+
 Your task is to develop a Product Inventory System, consisting of both frontend and backend components. The system should allow users to manage products and product categories. Follow the MVC (Model-View-Controller) architecture for the backend and design a responsive frontend using ReactJS.
 
 *Backend Requirements (Node.js with Express and MongoDB):*
