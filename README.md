@@ -3,7 +3,7 @@
 
 I am using node  V18
 
-run both project 
+Run both FrontEnd and BackEnd project using this cmd 
 `npm start`
 
 
