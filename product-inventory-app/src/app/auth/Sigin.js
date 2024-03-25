@@ -64,13 +64,7 @@ export default function SignIn() {
                             fullWidth
                             id="email"
                             label="Email Address"
-                            {...register("email", {
-                                required: "Email is required",
-                                pattern: {
-                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                                    message: "Invalid email address",
-                                },
-                            })}
+                            {...register("email")}
                             error={!!errors.email}
                             helperText={errors.email?.message}
                             autoComplete="email"
@@ -83,15 +77,7 @@ export default function SignIn() {
                             name="password"
                             label="Password"
                             type="password"
-                            {...register("password", {
-                                required: "Password is required",
-                                pattern: {
-                                    value:
-                                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\/\\-]).{8,}$/,
-                                    message:
-                                        "Password must be at least 8 characters long, containing at least one digit, one uppercase letter, one lowercase letter, and one special character",
-                                },
-                            })}
+                            {...register("password")}
                             error={!!errors.password}
                             helperText={errors.password?.message}
                             id="password"
