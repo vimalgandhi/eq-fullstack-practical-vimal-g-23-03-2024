@@ -19,10 +19,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import React, { useState } from "react";
+import useScreenWidthLessThan768 from "../../hook/window_resize_hook";
 import Categories from "../category/CategoryList";
 import Products from "../product/ProductList";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
@@ -71,10 +72,15 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-    const [open, setOpen] = useState(true);
+    const windowResize = useScreenWidthLessThan768();
+    const [open, setOpen] = useState(!windowResize);
     const [product, setProduct] = useState(true);
     const toggleDrawer = () => {
-        setOpen(!open);
+        if (!windowResize) {
+            setOpen(!open);
+        } else {
+            setOpen(false);
+        }
     };
 
     const mainListItems = (
