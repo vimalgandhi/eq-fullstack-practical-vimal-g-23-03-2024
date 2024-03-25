@@ -7,10 +7,8 @@ import { AuthProvider } from './provider/AuthProvider';
 
 
 function App() {
-  const tokenLatest = localStorage.getItem("Token");
-
-
   const PrivateRoute = ({ children }) => {
+    const tokenLatest = localStorage.getItem("token");
     return tokenLatest ? children : <Navigate to="/login" />;
   };
 
@@ -19,7 +17,7 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<SignIn />} />
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} exact />
           <Route
@@ -27,6 +25,14 @@ function App() {
             element={
               <PrivateRoute>
                 < Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/*"
+            element={
+              <PrivateRoute>
+                < Navigate to="/dashboard" />
               </PrivateRoute>
             }
           />

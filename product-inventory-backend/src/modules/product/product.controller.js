@@ -6,7 +6,7 @@ const productController = {
 
     createProduct: async (req, res) => {
         try {
-            const { name, description, categoryId, price,  imageUrl } = req.body;
+            const { name, description, categoryId, price, imageUrl } = req.body;
             const { id } = req.me;
 
             const product = new productModel({
@@ -29,7 +29,7 @@ const productController = {
 
     updateProduct: async (req, res) => {
         try {
-            const { id, name, description, categoryId, price, quantity, image } = req.body;
+            const { productId, name, description, categoryId, price, imageUrl } = req.body;
             const { me } = req;
 
             const product = {
@@ -37,11 +37,10 @@ const productController = {
                 description,
                 categoryId,
                 price,
-                quantity,
-                image
+                imageUrl
             }
 
-            await categoryModel.updateOne({ _id: ObjectId(id), createdBy: ObjectId(me.id) }, product);
+            await productModel.updateOne({ _id: ObjectId(productId), createdBy: ObjectId(me.id) }, product);
 
             return res.status(201).json({ message: "Product updated successfully", product });
         } catch (error) {

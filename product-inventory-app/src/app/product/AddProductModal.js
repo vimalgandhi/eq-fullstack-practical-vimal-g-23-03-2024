@@ -1,15 +1,18 @@
+import { MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function AddProductModal({ onSubmit, initialValues, isOpen, onClose, categories }) {
     const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: initialValues // Set initial values for form fields
+        defaultValues: initialValues
     });
+    const [selectedCategory, setSelectedCategory] = useState(initialValues ? initialValues.category : '');
+
 
     const handleFormSubmit = (data) => {
         onSubmit(data);
@@ -71,7 +74,7 @@ export default function AddProductModal({ onSubmit, initialValues, isOpen, onClo
                         error={!!errors.imageUrl}
                         helperText={errors.imageUrl && "Image URL is required"}
                     />
-                    {/* <TextField
+                    <TextField
                         fullWidth
                         select
                         margin="normal"
@@ -79,13 +82,15 @@ export default function AddProductModal({ onSubmit, initialValues, isOpen, onClo
                         {...register('category', { required: true })}
                         error={!!errors.category}
                         helperText={errors.category && "Category is required"}
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
                     >
                         {categories.map((category) => (
-                            <MenuItem key={category.id} value={category.id}>
+                            <MenuItem key={category._id} value={category._id}>
                                 {category.name}
                             </MenuItem>
                         ))}
-                    </TextField> */}
+                    </TextField>
                     <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                         Submit
                     </Button>
