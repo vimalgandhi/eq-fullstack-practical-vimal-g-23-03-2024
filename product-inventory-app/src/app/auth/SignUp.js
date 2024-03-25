@@ -96,7 +96,14 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    {...register("email", { required: "Email is required" })}
+                                    {...register("email", {
+                                        required: "Email is required",
+                                        pattern: {
+                                            value:
+                                                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                                            message: "Invalid email address",
+                                        },
+                                    })}
                                     error={!!errors.email}
                                     helperText={errors.email?.message}
                                 />
@@ -112,6 +119,12 @@ export default function SignUp() {
                                     autoComplete="new-password"
                                     {...register("password", {
                                         required: "Password is required",
+                                        pattern: {
+                                            value:
+                                                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\/\\-]).{8,}$/,
+                                            message:
+                                                "Password must be at least 8 characters long, containing at least one digit, one uppercase letter, one lowercase letter, and one special character",
+                                        },
                                     })}
                                     error={!!errors.password}
                                     helperText={errors.password?.message}

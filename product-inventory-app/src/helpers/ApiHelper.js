@@ -9,9 +9,10 @@ export const fetchData = async (endpoint, headers) => {
         const response = await axios.get(`${BASE_URL}/${endpoint}`, headers);
         return response.data;
     } catch (error) {
+        const errorMessage = error.response ? error.response.data.error : error.message;
         swal({
             title: "Error!",
-            text: (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.response,
+            text: errorMessage,
             icon: "error",
             button: "Ok!",
         });
@@ -24,17 +25,13 @@ export const createData = async (endpoint, newData, headers) => {
         const response = await axios.post(`${BASE_URL}/${endpoint}`, newData, headers);
         return response.data;
     } catch (error) {
-        // Extract error message from the error object
         const errorMessage = error.response ? error.response.data.error : error.message;
-
-        // Display SweetAlert with the error message
         swal({
             title: "Error!",
             text: errorMessage,
             icon: "error",
             button: "Ok!",
         });
-        // Throw error to propagate it further if needed
     }
 };
 
@@ -45,9 +42,10 @@ export const updateData = async (endpoint, updatedData, headers) => {
         const response = await axios.put(`${BASE_URL}/${endpoint}`, updatedData, headers);
         return response.data;
     } catch (error) {
+        const errorMessage = error.response ? error.response.data.error : error.message;
         swal({
             title: "Error!",
-            text: error,
+            text: errorMessage,
             icon: "error",
             button: "Ok!",
         });
@@ -61,9 +59,10 @@ export const deleteData = async (endpoint, headers) => {
         const response = await axios.delete(`${BASE_URL}/${endpoint}`, headers);
         return response.data;
     } catch (error) {
+        const errorMessage = error.response ? error.response.data.error : error.message;
         swal({
             title: "Error!",
-            text: error,
+            text: errorMessage,
             icon: "error",
             button: "Ok!",
         });

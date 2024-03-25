@@ -1,21 +1,25 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { createData } from '../../helpers/ApiHelper';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { createData } from "../../helpers/ApiHelper";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
@@ -34,23 +38,39 @@ export default function SignIn() {
                 <Box
                     sx={{
                         marginTop: 10,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
                     }}
                 >
-                    <img alt="Company Logo" src="https://equestsolutions.net/images/logo-large-1.png" width={200} height={100} />
+                    <img
+                        alt="Company Logo"
+                        src="https://equestsolutions.net/images/logo-large-1.png"
+                        width={200}
+                        height={100}
+                    />
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit(onSubmit)}
+                        noValidate
+                        sx={{ mt: 1 }}
+                    >
                         <TextField
                             margin="normal"
                             required
                             fullWidth
                             id="email"
                             label="Email Address"
-                            {...register('email', { required: 'Email is required' })}
+                            {...register("email", {
+                                required: "Email is required",
+                                pattern: {
+                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                                    message: "Invalid email address",
+                                },
+                            })}
                             error={!!errors.email}
                             helperText={errors.email?.message}
                             autoComplete="email"
@@ -63,7 +83,15 @@ export default function SignIn() {
                             name="password"
                             label="Password"
                             type="password"
-                            {...register('password', { required: 'Password is required' })}
+                            {...register("password", {
+                                required: "Password is required",
+                                pattern: {
+                                    value:
+                                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~=\`{}\[\]:;"'<>,.?\/\\-]).{8,}$/,
+                                    message:
+                                        "Password must be at least 8 characters long, containing at least one digit, one uppercase letter, one lowercase letter, and one special character",
+                                },
+                            })}
                             error={!!errors.password}
                             helperText={errors.password?.message}
                             id="password"
