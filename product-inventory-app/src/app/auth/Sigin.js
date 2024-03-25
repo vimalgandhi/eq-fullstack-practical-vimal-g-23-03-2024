@@ -19,7 +19,6 @@ export default function SignIn() {
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
-
         const response = await createData("users/sign-in", data);
         if (response) {
             const token = response.token;

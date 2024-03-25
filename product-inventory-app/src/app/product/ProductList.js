@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import swal from "sweetalert";
@@ -38,28 +39,36 @@ export default function Products() {
         });
     };
 
-    const handleAddProduct = (data) => {
+    const handleAddProduct = async (data) => {
         setIsModalOpen(false);
         const token = localStorage.getItem("token");
         const config = {
             headers: { Authorization: `Bearer ${token}` },
         };
-        if (data._id) {
+        console.log(data);
+        if (data.productId) {
             const product = {
-                id: data._id,
+                productId: data.productId,
                 name: data.name,
                 description: data.description,
-                categoryId: data.categoryId,
+                categoryId: data.category,
                 price: data.price,
                 imageUrl: data.imageUrl,
             };
-            updateData("products", product, config).then((data) => {
+            await updateData("products", product, config).then((data) => {
                 if (data) {
                     getProduts();
                 }
             });
         } else {
-            createData("products", data, config).then((data) => {
+            const product = {
+                name: data.name,
+                description: data.description,
+                categoryId: data.category,
+                price: data.price,
+                imageUrl: data.imageUrl,
+            };
+            await createData("products", product, config).then((data) => {
                 if (data) {
                     getProduts();
                 }
@@ -68,7 +77,15 @@ export default function Products() {
     };
 
     const handleEditProduct = (product) => {
-        setSelectedProduct(product);
+        const data = {
+            productId: product._id,
+            name: product.name,
+            description: product.description,
+            category: product.categoryId,
+            price: product.price,
+            imageUrl: product.imageUrl,
+        }
+        setSelectedProduct(data);
         setIsModalOpen(true);
     };
 
@@ -109,7 +126,7 @@ export default function Products() {
                     color="primary"
                     size="small"
                     sx={{ marginLeft: "auto" }}
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => { setIsModalOpen(true); setSelectedProduct(null) }}
                 >
                     Add Product
                 </Button>
@@ -123,11 +140,18 @@ export default function Products() {
                     categories={cateogories}
                 />
             ) : null}
-            <ProductCard
-                products={products}
-                handleEditProduct={handleEditProduct}
-                handleDeleteProduct={handleDeleteProduct}
-            />
+            <Grid container spacing={2}>
+                {products.map((product) => (
+                    <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+                        <ProductCard
+                            product={product}
+                            handleEditProduct={handleEditProduct}
+                            handleDeleteProduct={handleDeleteProduct}
+                        />
+                    </Grid>
+                ))}
+            </Grid>
+
         </React.Fragment>
     );
 }

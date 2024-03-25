@@ -104,7 +104,7 @@ export default function Categories() {
                     color="primary"
                     size="small"
                     sx={{ marginLeft: "auto" }}
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => { setIsModalOpen(true); setSelectedCategory(null) }}
                 >
                     Add Category
                 </Button>

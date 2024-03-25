@@ -18,7 +18,7 @@ import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
-import React from "react";
+import React, { useState } from "react";
 import Categories from "../category/CategoryList";
 import Products from "../product/ProductList";
 
@@ -71,8 +71,8 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-    const [open, setOpen] = React.useState(true);
-    const [product, setProduct] = React.useState(false);
+    const [open, setOpen] = useState(true);
+    const [product, setProduct] = useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };

@@ -1,23 +1,35 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import React from 'react';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import React from "react";
 
-export default function ProductCard({ products, handleEditProduct, handleDeleteProduct }) {
+export default function ProductCard({
+    product,
+    handleEditProduct,
+    handleDeleteProduct,
+}) {
     return (
         <>
-            {products.map((product) => (
-                <Card key={product._id} sx={{ maxWidth: 345, margin: '10px' }}>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {product.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {product.description}
-                        </Typography>
+            <Card key={product._id} sx={{ maxWidth: 345, margin: "10px" }}>
+                <CardMedia
+                    component="img"
+                    height="200"
+                    sx={{ objectFit: "contain", backgroundColor: "white" }}
+                    image={product.imageUrl} // Replace product.image with the URL or path to your image
+                    alt={product.name} // Replace product.name with the appropriate alt text for your image
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {product.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {product.description}
+                    </Typography>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                         <IconButton
                             color="primary"
                             onClick={() => handleEditProduct(product)}
@@ -30,9 +42,10 @@ export default function ProductCard({ products, handleEditProduct, handleDeleteP
                         >
                             <DeleteIcon />
                         </IconButton>
-                    </CardContent>
-                </Card>
-            ))}
+                    </div>
+
+                </CardContent>
+            </Card>
         </>
     );
 }
